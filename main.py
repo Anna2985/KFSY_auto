@@ -23,3 +23,4 @@ check_dialog = app.window(title='程式')
 check_dialog['OKButton'].click_input()
 print(f'已取得 fileName : {default_file_name}')
 
+"123"
