@@ -1,14 +1,29 @@
-from Tools.scripts.make_ctype import method
-from pywinauto import Application, timings
+from pywinauto import Application
 from flask import Flask, jsonify
+import shutil
+import os
+def move_file(source_path, destination_path):
+    if not os.path.exists(source_path):
+        print('來源檔案不存在')
+        return
+    if not os.path.exists(destination_path):
+        os.makedirs(destination_path)
+    destination_file_path = os.path.join(destination_path,os.path.basename(source_path))
+    if os.path.exists(destination_file_path):
+        os.remove(destination_file_path)
+    try:
+        shutil.move(source_path,destination_path)
+        print(f'檔案已從{source_path}移動到{destination_path}')
+    except Exception as e:
+        print(f'移動檔案發生錯誤')
 app = Flask(__name__)
-uds_app = Application('uia')
-uds_app.connect(path='UDS022P.exe', timeout=5)
-#print(app.windows())
-np = uds_app['程式【UDS022P】版本:1.20.1.1 Butterfly@'] #代表記事本窗體
-#np.dump_tree()
 @app.route('/api/get_file_name', methods=['GET'])
 def get_file_name():
+    uds_app = Application('uia')
+    uds_app.connect(path='UDS022P.exe', timeout=5)
+    # print(app.windows())
+    np = uds_app['程式【UDS022P】版本:1.20.1.1 Butterfly@']  # 代表記事本窗體
+    # np.dump_tree()
     # np['查詢資料'].click_input()
     np['匯出'].click_input()
     # print(np.children())
@@ -22,6 +37,10 @@ def get_file_name():
     check_dialog = uds_app.window(title='程式')
     check_dialog['OKButton'].click_input()
     print(f'已取得 fileName : {default_file_name}')
+    source_file  = f'C:\\{default_file_name}'
+    destination_folder = r"C:\Users\Administrator\Downloads\HIS"
+    #shutil.move(source_file, destination_folder)
+    move_file(source_file,destination_folder)
     return jsonify({
         'result':default_file_name
     })
@@ -29,6 +48,8 @@ def get_file_name():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
 
 
 
