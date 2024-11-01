@@ -37,7 +37,7 @@ def get_file_name():
     check_dialog = uds_app.window(title='程式')
     check_dialog['OKButton'].click_input()
     print(f'已取得 fileName : {default_file_name}')
-    source_file  = f'C:\\{default_file_name}'
+    source_file  = fr'C:\{default_file_name}'
     destination_folder = r"C:\Users\Administrator\Downloads\HIS"
     #shutil.move(source_file, destination_folder)
     move_file(source_file,destination_folder)
