@@ -44,6 +44,7 @@ file_name_combo = save_dialog.child_window(title='檔案名稱(N):', control_typ
 file_name_edit = file_name_combo.child_window(control_type='Edit')
 default_file_name = file_name_edit.get_value()
 
+
 save_dialog['存檔(S)'].click_input()
 check_dialog = uds_app.window(title='程式')
 check_dialog['OKButton'].click_input()
